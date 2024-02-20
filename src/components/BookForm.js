@@ -1,16 +1,73 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
-function BookForm() {
+function BookForm( props ) {
   const [book, setBook] = useState({
-    bookname: "bookname",
-    author: "author",
-    quantity: "quantity",
-    price: "price",
-    date: "date",
+    bookname: props.bookname ? props.book.bookname : "",
+    author: props.author ? props.book.author : "",
+    quantity: props.quantity ? props.book.quantity : "",
+    price: props.price ? props.book.price : "",
+    date: props.date ? props.book.date : "",
   });
 
+  const [errorMsg, setErrorMsg] = useState("")
+
+  const {bookname, author, price, quantity} = book
+
+  const handleOnSubmit = (e) => {
+    console.log("called", book);
+    let errorMsg = ''
+    e.preventDefault();
+    const values = [bookname, author, price, quantity];
+    const allFields = values.every((field) =>{
+      let val = `${field}`
+      return val =='' || val !== '0'
+    })
+    
+    if(allFields){
+      const newBook = {
+        id : uuidv4(),
+        bookname,
+        author,
+        price,
+        quantity,
+        date : new Date()
+      }
+      console.log("new Book", newBook);
+      props.handleOnSubmit(newBook)
+    }else{
+      errorMsg = "Fill all the fields"
+    }
+    setErrorMsg(errorMsg)
+  };
+
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "quantity":
+        setBook((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+      case "price":
+        setBook((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+      default:
+        setBook((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+    }
+  };
+
   return (
-    <div>
+    <form onSubmit={handleOnSubmit}>
       <div className="flex min-h-screen flex-col justify-center bg-gray-100 py-6 sm:py-12">
         <div className="relative py-3 sm:mx-auto sm:max-w-xl">
           <div className="absolute inset-0 -skew-y-6 transform bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg sm:-rotate-6 sm:skew-y-0 sm:rounded-3xl"></div>
@@ -25,11 +82,13 @@ function BookForm() {
                  text-gray-700 sm:text-lg
                   sm:leading-7"
                 >
+                  {errorMsg && <h3>{errorMsg}</h3>}
                   <div className="relative">
                     <input
+                      onChange={handleInputChange}
                       autoComplete="off"
-                      id="bookName"
-                      name="bookName"
+                      id="bookname"
+                      name="bookname"
                       type="text"
                       className="
                         focus:borer-rose-600 peer h-10
@@ -39,7 +98,7 @@ function BookForm() {
                       placeholder=" Book Name"
                     />
                     <label
-                      htmlFor="bookName"
+                      htmlFor="bookname"
                       className="
                         peer-placeholder-shown:text-gray-440 absolute -top-3.5 left-0
                         text-sm text-gray-600 
@@ -53,6 +112,7 @@ function BookForm() {
 
                   <div className="relative">
                     <input
+                      onChange={handleInputChange}
                       autoComplete="off"
                       id="bookAuthor"
                       name="bookAuthor"
@@ -79,6 +139,7 @@ function BookForm() {
 
                   <div className="relative">
                     <input
+                      onChange={handleInputChange}
                       autoComplete="off"
                       id="quantity"
                       name="quantity"
@@ -100,9 +161,9 @@ function BookForm() {
                     </label>
                   </div>
 
-
                   <div className="relative">
                     <input
+                      onChange={handleInputChange}
                       autoComplete="off"
                       id="price"
                       name="price"
@@ -123,7 +184,6 @@ function BookForm() {
                       Price
                     </label>
                   </div>
-                  
 
                   <div className="relative">
                     <button className="rounded-md bg-cyan-500 px-2 py-1 text-white">
@@ -136,7 +196,7 @@ function BookForm() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
