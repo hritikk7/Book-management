@@ -1,12 +1,12 @@
 import React from "react";
 import BookForm from "./BookForm";
+import { useNavigate } from "react-router-dom";
 
-function AddBook({history, books, setBooks}) {
-
+function AddBook({ history, books, setBooks}) {
+  const navigate = useNavigate();
   const handleOnSubmit = (book) =>{
-    console.log(book);
     setBooks([book, ...books])
-    history.push('/')
+    navigate("/");
   }
   return (
     <>

@@ -12,9 +12,10 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard books={books} setBooks={setBooks} />} />
+        
         <Route
-          element={<AddBook books={books} setBooks={setBooks} />}
+          element={<AddBook books={books} setBooks={setBooks} exact={true} />}
           path="/addBook"
         />
       </Routes>
