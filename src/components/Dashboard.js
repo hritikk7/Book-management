@@ -1,8 +1,16 @@
 import React from "react";
 import Book from "./Book";
 function Dashboard({ books, setBooks }) {
-  console.log("books in Dashboard", books);
-  console.log("books  data", books[0].id, books[0].bookname);
+  // console.log("books in Dashboard", books);
+  // console.log("books  data", books[0].author);
+  const handleBookRemove = (id) => {
+    console.log("id of the book", id);
+    const newBookList = books.filter((book) => book.id !== id);
+    console.log("newBookList", newBookList);
+    setBooks(newBookList);
+    localStorage.clear();
+  };
+
   return (
     <>
       <div className="flex  flex-col">
@@ -12,11 +20,12 @@ function Dashboard({ books, setBooks }) {
       </div>
       <div className="mx-20 grid h-full grid-cols-4 gap-12">
         {books && books.length > 0 ? (
-          books.map((book) => <Book key={book.id} {...book} />)
+          books.map((book) => (
+            <Book key={book.id} {...book} handleBookRemove={handleBookRemove} />
+          ))
         ) : (
           <h3>No Books in inventory</h3>
         )}
-        <Book />
       </div>
     </>
   );

@@ -13,9 +13,8 @@ function BookForm( props ) {
   const [errorMsg, setErrorMsg] = useState("")
 
   const {bookname, author, price, quantity} = book
-
+  console.log("book in the bookform",  props  );
   const handleOnSubmit = (e) => {
-    console.log("called", book);
     let errorMsg = ''
     e.preventDefault();
     const values = [bookname, author, price, quantity];
@@ -44,6 +43,7 @@ function BookForm( props ) {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    console.log("name, value", name, value);
     switch (name) {
       case "quantity":
         setBook((prevState) => ({
@@ -66,6 +66,7 @@ function BookForm( props ) {
     }
   };
 
+  console.log("book in book form", book);
   return (
     <form onSubmit={handleOnSubmit}>
       <div className="flex min-h-screen flex-col justify-center bg-gray-100 py-6 sm:py-12">
@@ -114,8 +115,8 @@ function BookForm( props ) {
                     <input
                       onChange={handleInputChange}
                       autoComplete="off"
-                      id="bookAuthor"
-                      name="bookAuthor"
+                      id="author"
+                      name="author"
                       type="text"
                       className="
                         focus:borer-rose-600 peer h-10
@@ -125,7 +126,7 @@ function BookForm( props ) {
                       placeholder="Book Author"
                     />
                     <label
-                      htmlFor="bookAuthor"
+                      htmlFor="author"
                       className="
                         peer-placeholder-shown:text-gray-440 absolute -top-3.5 left-0
                         text-sm text-gray-600 
